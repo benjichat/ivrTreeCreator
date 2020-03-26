@@ -11,8 +11,8 @@ from pymongo import MongoClient
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
 customers = db.customers #customer konversation database
-first = db.victoria #usecase database
-collectionName = "victoria"
+first = db.third #usecase database
+collectionName = "third"
 
 print()
 print("BOOTING DEMO FOR COLLECTION '" + collectionName + "'")

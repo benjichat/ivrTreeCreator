@@ -1,2 +1,77 @@
 # ivrTreeCreator
-Command line tool to create IVR trees
+
+### What you will need
+
+* [A 46elks Account](www.46elks.com)
+* Access to the 46elks Konversations API if you want to use the SMS functionality (can modify for regular SMS API)
+* A free [mongoDB Atlas account](https://www.mongodb.com/cloud/atlas)
+* If you want to use Google's Text-to-speech API then you need a [GCP Account](https://cloud.google.com/text-to-speech)
+
+### The Builder API
+
+This is the API that communicates with MongoDB at receives input from the builder tool. 
+
+You will need to update:
+
+```
+db = client.get_database("YOUR DATABASE")
+first = db.YOUR COLLECTION #usecase collection
+```
+
+AND any listening servers
+
+```
+https://dca8234f.ngrok.io/mongo_demo
+```
+### The Builder Tool
+
+This is the tool that communicates with the API to build your IVR tree
+
+```
+1. New Path/Host, 2. New Options, 3. TODO list, 4. Current Paths/Hosts, 5. Current Tree, 6. Build IVR
+```
+
+1. New Paths are also hosts for new messages and new options. 
+
+```
+New Path Name = Welcome
+New Path Message = Welcome to 46elks. Please choose from:
+```
+You will also be given the choice to ADD options immmeadietly 
+
+2. New Options must be attached to a host (path) AND provide a connection to a new path (host)
+
+```
+New option Host = Welcome (This is the path the options are connected to)
+New option Message = to speak with customer support (This is the available option)
+New option Connection = Support (This is the connection that will trigger if this option is chosen)
+```
+3. TODO list is a list of hosts that need to be made to match with option connections
+
+```
+{"paths" : "Support"} - This means that the Support option needs to be created as a new path
+```
+4. Current Paths/Hosts refers to the available Paths/Hosts to add options to
+
+```
+{"list of paths" : ["Support", "Welcome"]} - This means that the Support option needs to be created as a new path
+```
+5. Returns a JSON of the current tree structure
+6. Builds the Voice IVR system using Google Text-to-speech
+
+### The Demo Environment
+
+Once again you will need to update:
+
+```
+db = client.get_database("YOUR DATABASE")
+first = db.YOUR COLLECTION #usecase collection
+```
+
+AND any listening servers
+
+```
+https://dca8234f.ngrok.io/mongo_demo
+```
+
+AND the call forwarding options on your 46elks account.

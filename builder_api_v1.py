@@ -10,8 +10,8 @@ from createVoice import createVoice, createSSML
 
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
-first = db.victoria #usecase database
-collectionName = "victoria"
+first = db.third#usecase database
+collectionName = "third"
 
 print()
 print()
@@ -144,9 +144,9 @@ def noncomplete():
 def optionalConnections():
     print("---------------------CONNECTIONS AVAILABLE-------------------------------")
     allRows = first.find({})
-    connections = {"list":[]}
+    connections = {"list of paths":[]}
     for x in allRows:
-        connections["list"].append({"name":x["name"]})
+        connections["list of paths"].append({"name":x["name"]})
     return connections
 
 @post('/connections')

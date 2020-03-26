@@ -29,7 +29,7 @@ def postOption(host, message, connnectNext, endpoint):
     pprint(response.text)
 
 while cont:
-    print("1. New Path, 2. New Options, 3. TODO list, 4. Current options, 5. Current Tree, 6. Build IVR")
+    print("1. New Path/Host, 2. New Options, 3. TODO list, 4. Current Paths/Hosts, 5. Current Tree, 6. Build IVR")
     line = sys.stdin.readline()
     choice = line.rstrip()
 
