@@ -57,8 +57,19 @@ New option Connection = Support (This is the connection that will trigger if thi
 {"list of paths" : ["Support", "Welcome"]} - This means that the Support option needs to be created as a new path
 ```
 5. Returns a JSON of the current tree structure
-6. Builds the Voice IVR system using Google Text-to-speech
-
+```
+{'state': [{'message': 'This is the start of your journey. What would you like to do?',
+            'name': 'Start',
+            'options': [{'connection': 'realm',
+                         'message': 'Head into the realm',
+                         'pid': 1}],
+            'retain': True,
+            'pid': 1,}
+```
+6. Builds the Voice IVR system using Google Text-to-speech (you will need to export your credentials correctly for this step to processes)[guide on credentials](https://cloud.google.com/docs/authentication/getting-started)
+```
+{'state': 'Done'}
+```
 ### The Demo Environment
 
 Once again you will need to update:

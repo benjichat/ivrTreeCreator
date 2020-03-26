@@ -11,7 +11,7 @@ from pymongo import MongoClient
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
 customers = db.customers #customer konversation database
-first = db.third #usecase database
+currentCollection = db.fifth#usecase database
 collectionName = "third"
 
 print()
@@ -47,7 +47,7 @@ def check_stop(message):
     print("No stop message, continuing")
 
 def check_valid_response(message,current_customer):
-    current_usecase = first.find_one({"pid":current_customer["request_ids"][-1]})
+    current_usecase = currentCollection.find_one({"pid":current_customer["request_ids"][-1]})
     print("---------------------------- CURRENT KUND ---------------------------")
     pprint(current_customer)
     print("---------------------------- CURRENT USE ---------------------------")
@@ -70,7 +70,7 @@ def check_valid_response(message,current_customer):
         responseFind = current_usecase["options"][int(message)-1]
         print(responseFind)
         responseFind = responseFind["connection"]
-        responseFind = first.find_one({"name": responseFind})
+        responseFind = currentCollection.find_one({"name": responseFind})
         responseMessage = responseFind["message"]
         for option in responseFind["options"]:
             responseMessage += "\r\n" + str(option["pid"]) + ". " +   option["message"]
@@ -80,7 +80,7 @@ def check_valid_response(message,current_customer):
     return response, retain
 
 def startingPoint():
-    start = first.find_one({"pid":1})
+    start = currentCollection.find_one({"pid":1})
     responseMessage = start["message"]
     for option in start["options"]:
             responseMessage += "\r\n" + option["message"]
@@ -130,13 +130,13 @@ def test_response():
     created = str(request.forms.get("created"))
     callNumber = request.forms.get("from")
     newCustomer = checkCustomerVoice(callID, callNumber, created)
-    startVoice = first.find_one({"pid":1})
+    startVoice = currentCollection.find_one({"pid":1})
     print(startVoice["voiceIVR"])
     messageVoice = startVoice["voiceIVR"]
     return json.dumps(messageVoice)
 
 def checkVoice(keyPress, current_customer):
-    current_usecase = first.find_one({"pid":current_customer["request_ids"][-1]})
+    current_usecase = currentCollection.find_one({"pid":current_customer["request_ids"][-1]})
     print("---------------------------- CURRENT KUND ---------------------------")
     pprint(current_customer)
     print("---------------------------- CURRENT USE ---------------------------")
@@ -159,7 +159,7 @@ def checkVoice(keyPress, current_customer):
         responseFind = current_usecase["options"][int(keyPress)-1]
         print(responseFind)
         responseFind = responseFind["connection"]
-        responseFind = first.find_one({"name": responseFind})
+        responseFind = currentCollection.find_one({"name": responseFind})
         responseVoice = responseFind["voiceIVR"]
         response = responseVoice
         customers.update_one(current_customer,{"$push":{"request_responses":str(keyPress), "request_ids":responseFind["pid"]}})

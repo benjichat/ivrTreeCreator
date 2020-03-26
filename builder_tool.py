@@ -50,10 +50,10 @@ while cont:
         if retain == None:
             retain = retain
             postPath(name, message, 'newPath', retain)
-            addOption = True
+            addOption = False
         else:
             postPath(name, message, 'newPath', retain)
-            addOption = False
+            addOption = True
         while addOption:
             print("Press '1' to add option OR Press '2' to skip")
             line = sys.stdin.readline()
