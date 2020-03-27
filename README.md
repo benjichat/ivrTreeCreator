@@ -7,8 +7,23 @@
 * A free [mongoDB Atlas account](https://www.mongodb.com/cloud/atlas)
 * If you want to use Google's Text-to-speech API then you need a [GCP Account](https://cloud.google.com/text-to-speech)
 
+## ivrTreeCreator Overview
+
+There are currently three components to this repo:
+
+1. The Builder API
+2. The Builder Tool
+3. The Demo Environment
+
+The 'Builder API' communicates with MongoDB and Google when creating branches/IVR etc. The builder API also receives input from the Builder tool. 
+
+The 'Builder Tool' is a simple command line interface to add branches, messages and options to your IVR or SMS tree. Currently this only supports building new trees and adding options to branches. In the future more functionality such as editing current messages and options will be available. 
+
+The 'Demo Environment' is a server that will run so that calls and text messages can interact with the IVR / SMS trees you have built
+
 ### The Builder API
 
+Currently the way these 
 This is the API that communicates with MongoDB and receives input from the builder tool. 
 
 You will need to update:
