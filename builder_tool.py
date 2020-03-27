@@ -60,7 +60,7 @@ while cont:
             add = line.strip()
             if add == "1":
                 host = name
-                print("Enter an message for this option - Press # to ...")
+                print("Enter a message for this option - Press # to ...")
                 line = sys.stdin.readline()
                 message = line.strip()
                 print("Please enter next connection name:")
