@@ -9,19 +9,14 @@
 
 ### The Builder API
 
-This is the API that communicates with MongoDB at receives input from the builder tool. 
+This is the API that communicates with MongoDB and receives input from the builder tool. 
 
 You will need to update:
 
 ```
 db = client.get_database("YOUR DATABASE")
 first = db.YOUR COLLECTION #usecase collection
-```
-
-AND any listening servers
-
-```
-https://dca8234f.ngrok.io/mongo_demo
+currentServer = "https://dca8234f.ngrok.io/"
 ```
 ### The Builder Tool
 
@@ -67,22 +62,22 @@ New option Connection = Support (This is the connection that will trigger if thi
             'pid': 1,}
 ```
 6. Builds the Voice IVR system using Google Text-to-speech (you will need to export your credentials correctly for this step to processes)[guide on credentials](https://cloud.google.com/docs/authentication/getting-started)
+
 ```
-{'state': 'Done'}
+{'tree branches built': [{'name': 'deeper', 'pid': 3}]}
+```
+OR
+```
+{"tree branches built":"no tree to build, please add new paths and options"}
 ```
 ### The Demo Environment
 
-Once again you will need to update:
+You will need to update:
 
 ```
 db = client.get_database("YOUR DATABASE")
 first = db.YOUR COLLECTION #usecase collection
-```
-
-AND any listening servers
-
-```
-https://dca8234f.ngrok.io/mongo_demo
+currentServer = "https://dca8234f.ngrok.io/"
 ```
 
 AND the call forwarding options on your 46elks account.

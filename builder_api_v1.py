@@ -10,8 +10,9 @@ from createVoice import createSSML
 
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
-currentCollection = db.fifth#usecase database
-collectionName = "fifth"
+currentCollection = db.EnterRealm #usecase database
+collectionName = "EnterRealm"
+currentServer = "https://dca8234f.ngrok.io/"
 
 print()
 print()
@@ -28,7 +29,7 @@ class pathCreator:
     def newPath(self):
         if currentCollection.find_one({"name":self.name}):
             print("already path with this name")
-            return "There is already a path with this name. Check your current paths by posting to /pathState"
+            return {"error":"There is already a path with this name. Check your current paths by posting to /pathState"}
         pid = len(list(currentCollection.aggregate([{"$sort":{"pid":1}}])))
         if pid == 0:
             pid = 1
@@ -51,7 +52,7 @@ class optionCreator:
             for option in currentConnection["options"]:
                 if option["connection"] == self.connectNext:
                     print("This 'next connection' already exists")
-                    return "This 'next connection' already exists"
+                    return {"error":"This 'next connection' already exists"}
             pid = len(list(currentConnection["options"]))
             if pid == 0:
                 pid = 1
@@ -60,9 +61,9 @@ class optionCreator:
             self.newOption = {"pid":pid, "connection": self.connectNext, "message":self.message}
             currentCollection.update_one(currentConnection,{"$push":{"options":self.newOption}})
             currentConnection = currentCollection.find_one({"name":self.connectHost})
-            return "New Option Added"
+            return {"success":"new option added"}
         else:
-            return "Could not find path host with this name"
+            return {"error":"could not find a host with this name"}
 
 @post('/newPath')
 def newPath():
@@ -91,27 +92,29 @@ def newOption():
 
 def buildIVR():
     allRows = currentCollection.find({})
-    list_of_connections = []
-    non_complete = {"todo":[]}
-    allRows = currentCollection.find({})
-    #print(sorted_list)
+    builtTree = {"branches built":[]}
     for row in allRows:
         if "voiceIVR" in row:
             continue
         else:
             voiceMessage = row["message"]
             for option in row["options"]:
-                voiceMessage += "<break time='2' /> Press " + str(option["pid"]) + " for " + option["message"]
+                voiceMessage += "<break time='2' /> Press " + str(option["pid"]) + " to " + option["message"]
             print("--------------------- BUILDING IVR TREE -------------------------------")
             print(voiceMessage)
             voiceUpdate = createSSML(str(voiceMessage))
-            voiceIVR = {"ivr":voiceUpdate, "digits":1, "timeout": 4, "skippable":True, "next":"https://dca8234f.ngrok.io/voiceCont"}
+            voiceIVR = {"ivr":voiceUpdate, "digits":1, "timeout": 4, "skippable":True, "next": currentServer +"voiceCont"}
             currentCollection.update_one(row,{"$set":{"voiceIVR":voiceIVR}})
+            builtTree["branches built"].append({"name":row["name"], "pid":row["pid"]})
+    if builtTree["branches built"] == []:
+        return {"branches built":"no tree to build, please add new paths and options"}
+    else:
+        return builtTree
 
 @post('/buildIVR')
 def build_IVR():
-    buildIVR()
-    return {"state":"Done"}
+    #buildIVR()
+    return buildIVR()
 
 # This section defines non-complete sections. Sections that have been called as options but no host path
 
@@ -182,9 +185,9 @@ def test():
     auth = (config.elks_user, config.elks_pass),
     data = {
             "to": testNumber,
-            "message": message,
-            "token":"new1234567",
-            "reply_url": "https://dca8234f.ngrok.io/test_response"
+            "message": startMessage,
+            "token": "new1234567",
+            "reply_url": currentServer+"test_response"
             },
     )
     print(response)

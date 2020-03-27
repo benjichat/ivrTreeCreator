@@ -11,8 +11,9 @@ from pymongo import MongoClient
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
 customers = db.customers #customer konversation database
-currentCollection = db.fifth#usecase database
-collectionName = "third"
+currentCollection = db.EnterRealm #usecase database
+collectionName = "EnterRealm"
+currentServer = "https://dca8234f.ngrok.io/"
 
 print()
 print("BOOTING DEMO FOR COLLECTION '" + collectionName + "'")
@@ -87,7 +88,7 @@ def startingPoint():
     response = responseMessage
     return response
 
-@post('/mongo_demo')
+@post('/smsStart')
 def sms_usecase():
     print("---------------------------- MAIN SMS REceived -----------------------------")
     token = request.forms.get("token")
@@ -196,7 +197,7 @@ def demo_start():
             "to": from_sender,
             "message":startingPoint(),
             "token":id_generator(),
-            "reply_url": "https://dca8234f.ngrok.io/mongo_demo"
+            "reply_url": currentServer+"smsStart"
             }
     )
     print(response)

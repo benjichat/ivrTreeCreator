@@ -26,7 +26,7 @@ def postOption(host, message, connnectNext, endpoint):
         "connectNext": connectNext
         }
         )
-    pprint(response.text)
+    pprint(response.json())
 
 while cont:
     print("1. New Path/Host, 2. New Options, 3. TODO list, 4. Current Paths/Hosts, 5. Current Tree, 6. Build IVR")
