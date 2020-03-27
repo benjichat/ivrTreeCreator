@@ -10,8 +10,8 @@ from createVoice import createSSML
 
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
-currentCollection = db.EnterRealm #usecase database
-collectionName = "EnterRealm"
+currentCollection = db.jojo #usecase database
+collectionName = "jojo"
 currentServer = "https://dca8234f.ngrok.io/"
 
 print()
@@ -99,7 +99,7 @@ def buildIVR():
         else:
             voiceMessage = row["message"]
             for option in row["options"]:
-                voiceMessage += "<break time='2' /> Press " + str(option["pid"]) + " to " + option["message"]
+                voiceMessage += "<break time='1' /> Press " + str(option["pid"]) + " to " + option["message"]
             print("--------------------- BUILDING IVR TREE -------------------------------")
             print(voiceMessage)
             voiceUpdate = createSSML(str(voiceMessage))

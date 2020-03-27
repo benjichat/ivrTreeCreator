@@ -60,7 +60,7 @@ while cont:
             add = line.strip()
             if add == "1":
                 host = name
-                print("Please enter option messaage (without any numbering)")
+                print("Enter an message for this option - Press # to ...")
                 line = sys.stdin.readline()
                 message = line.strip()
                 print("Please enter next connection name:")
@@ -70,14 +70,14 @@ while cont:
             else:
                 addOption = False
     elif choice == "2":
-        print("Please select host:")
+        print("Please select host OR create a new path/host")
         postPath("new","next", 'connections')
         line = sys.stdin.readline()
         host = line.strip()
-        print("Please enter message:")  
+        print("Enter an message for this option - Press # to ...")  
         line = sys.stdin.readline()
         message = line.strip()
-        print("Please enter next connection name:")
+        print("Please enter next connection/host name:")
         line = sys.stdin.readline()
         connectNext = line.strip()
         postOption(host, message, connectNext, 'newOption')
