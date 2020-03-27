@@ -19,7 +19,7 @@ The **'Builder API'** communicates with MongoDB and Google when creating branche
 
 The **'Builder Tool'** is a simple command line interface to add branches, messages and options to your IVR or SMS tree. Currently this only supports building new trees and adding options to branches. In the future more functionality such as editing current messages and options will be available. 
 
-The **'Demo Environment'**** is a server that will run so that calls and text messages can interact with the IVR / SMS trees you have built
+The **'Demo Environment'** is a server that will run so that calls and text messages can interact with the IVR / SMS trees you have built
 
 ### The Builder API
 
