@@ -6,6 +6,7 @@
 * Access to the 46elks Konversations API if you want to use the SMS functionality (can modify for regular SMS API)
 * A free [mongoDB Atlas account](https://www.mongodb.com/cloud/atlas)
 * If you want to use Google's Text-to-speech API then you need a [GCP Account](https://cloud.google.com/text-to-speech)
+* Currently the API and Demo Environment is served using the bottle.py microframework on an NGROK server
 
 ## Overview
 

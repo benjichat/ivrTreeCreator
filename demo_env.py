@@ -11,16 +11,13 @@ from pymongo import MongoClient
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
 customers = db.customers #customer konversation database
-currentCollection = db.jojo #usecase database
-collectionName = "jojo"
+currentCollection = db.daniel #usecase database
+collectionName = "daniel"
 currentServer = "https://dca8234f.ngrok.io/"
 
 print()
 print("BOOTING DEMO FOR COLLECTION '" + collectionName + "'")
 print()
-
-def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
 
 def check_new_customer(token, from_sender, message, created):
     current_customer = customers.find_one({"token":token})
@@ -68,25 +65,12 @@ def check_valid_response(message,current_customer):
         return response, retain
     else:
         print("Response approved: Returning response")
-        responseFind = current_usecase["options"][int(message)-1]
+        responseFind = current_usecase["options"][int(message)-1]["connection"]
         print(responseFind)
-        responseFind = responseFind["connection"]
         responseFind = currentCollection.find_one({"name": responseFind})
-        responseMessage = responseFind["message"]
-        for option in responseFind["options"]:
-            responseMessage += "\r\n" + str(option["pid"]) + ". " +   option["message"]
-        response = responseMessage
-        retain = responseFind["retain"]
+        response, retain = responseFind["smsIVR"], responseFind["retain"]
         customers.update_one(current_customer,{"$push":{"request_responses":message, "request_ids":responseFind["pid"]}})
     return response, retain
-
-def startingPoint():
-    start = currentCollection.find_one({"pid":1})
-    responseMessage = start["message"]
-    for option in start["options"]:
-            responseMessage += "\r\n" + option["message"]
-    response = responseMessage
-    return response
 
 @post('/smsStart')
 def sms_usecase():
@@ -136,7 +120,8 @@ def test_response():
     messageVoice = startVoice["voiceIVR"]
     return json.dumps(messageVoice)
 
-def checkVoice(keyPress, current_customer):
+def checkVoice(keyPress, callID):
+    current_customer = customers.find_one({"callID":callID})
     current_usecase = currentCollection.find_one({"pid":current_customer["request_ids"][-1]})
     print("---------------------------- CURRENT KUND ---------------------------")
     pprint(current_customer)
@@ -166,11 +151,6 @@ def checkVoice(keyPress, current_customer):
         customers.update_one(current_customer,{"$push":{"request_responses":str(keyPress), "request_ids":responseFind["pid"]}})
     return response
 
-def contCustomerVoice(callID):
-    current_customer = customers.find_one({"callID":callID})
-    print("---------------------------- CHECKING KUND ---------------------------")
-    return current_customer
-
 @post('/voiceCont')
 def test_response():
     body = request.body.read()
@@ -179,15 +159,22 @@ def test_response():
     callID = request.forms.get("callid")
     print(keyPress, type(keyPress))
     print(callID)
-    currentCustomer = contCustomerVoice(callID)
-    messageVoice = checkVoice(keyPress, currentCustomer)
+    messageVoice = checkVoice(keyPress, callID)
     return messageVoice
 
 @get('/static/<path>')
 def static(path):
     return static_file(path, "static")
 
-@post('/demo_request')
+def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+def startingPoint():
+    start = currentCollection.find_one({"pid":1})
+    response = start["smsIVR"]
+    return response
+
+@post('/konversationsDemo')
 def demo_start():
     from_sender = request.forms.get("from")
     response = requests.post(
