@@ -40,8 +40,20 @@ class pathCreator:
         currentCollection.insert_one(newPath)
         print("Adding new connection")
         return {"name":self.name, "pid":pid, "message":self.message}
-    
-    
+
+    def newRecord(self):
+        if currentCollection.find_one({"name":self.name}):
+            print("already path with this name")
+            return {"error":"There is already a path with this name. Check your current paths by posting to /pathState"}
+        pid = len(list(currentCollection.aggregate([{"$sort":{"pid":1}}])))
+        if pid == 0:
+            pid = 1
+        else:
+            pid += 1
+        newPath = {"name":self.name, "pid":pid, "message":self.message, "retain": self.retain}
+        currentCollection.insert_one(newPath)
+        print("Adding new connection")
+        return {"name":self.name, "pid":pid, "message":self.message}
 
 class optionCreator:
     def __init__(self, connectHost, connectNext, message):
@@ -80,6 +92,15 @@ def newPath():
         entry = pathCreator(name, message, retain=True)
     return entry.newPath()
 
+@post('/recordAction')
+def newPath():
+    print("-------------------- NEW PATH POST-------------------------------")
+    name = "record"
+    message = request.forms.get("message")
+    print(message)
+    entry = pathCreator(name, message, retain=False)
+    return entry.newRecord()
+
 @post('/newOption')
 def newOption():
     print("-------------------- NEW OPTION POST-------------------------------")
@@ -97,7 +118,6 @@ def editPathMessage(name, message, pid=""):
         return {"error":"There is no path with this name"}
     else:
         if pid != "":
-
             currentCollection.update_one(editPath,{"$set":{"options.$[el1].message":message}}, array_filters=[{"el1.pid":int(pid)}])
         else:
             currentCollection.update_one(editPath,{"$set":{"message":message}})
@@ -139,18 +159,23 @@ def buildIVR(service):
     for row in allRows:
         smsMessage = row["message"]
         voiceMessage = row["message"]
-        for option in row["options"]:
-            voiceMessage += "<break time='1' /> Press " + str(option["pid"]) + " to " + option["message"]
-            smsMessage += "\r\n" + str(option["pid"]) + ". " +   option["message"]
-        print("--------------------- BUILDING IVR TREE -------------------------------")
-        if service == "voice":
+        if row["name"] == "record":
             voiceUpdate = createSSML(str(voiceMessage))
-            voiceIVR = {"ivr":voiceUpdate, "digits":1, "timeout": 4, "skippable":True, "next": currentServer +"voiceCont"}
+            voiceIVR = {"play":voiceUpdate, "digits":1, "timeout": 4, "skippable":True, "next": {"play":currentServer+"static/tone.wav", "next":{"record":currentServer+"recordings"}}}
             currentCollection.update_one(row,{"$set":{"voiceIVR":voiceIVR}})
-        elif service == "both":
-            currentCollection.update_one(row,{"$set":{"voiceIVR":voiceIVR, "smsIVR":smsMessage}})
         else:
-            currentCollection.update_one(row,{"$set":{"smsIVR":smsMessage}})
+            for option in row["options"]:
+                voiceMessage += "<break time='1' /> Press " + str(option["pid"]) + " to " + option["message"]
+                smsMessage += "\r\n" + str(option["pid"]) + ". " +   option["message"]
+            print("--------------------- BUILDING IVR TREE -------------------------------")
+            if service == "voice":
+                voiceUpdate = createSSML(str(voiceMessage))
+                voiceIVR = {"ivr":voiceUpdate, "digits":1, "timeout": 4, "skippable":True, "next": currentServer +"voiceCont"}
+                currentCollection.update_one(row,{"$set":{"voiceIVR":voiceIVR}})
+            elif service == "both":
+                currentCollection.update_one(row,{"$set":{"voiceIVR":voiceIVR, "smsIVR":smsMessage}})
+            else:
+                currentCollection.update_one(row,{"$set":{"smsIVR":smsMessage}})
         builtTree["branches built"].append({"name":row["name"], "pid":row["pid"]})
     if builtTree["branches built"] == []:
         return {"branches built":"no tree to build, please add new paths and options"}
@@ -219,6 +244,8 @@ def pathState():
 def connections():
     response.content_type = 'application/json'
     return pathState()
+
+
 
 #This allows users to test the konversationsAPI useability
 

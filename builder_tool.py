@@ -19,6 +19,15 @@ def postPath(name, message, endpoint, retain = ""):
         )
     pprint(response.json())
 
+def postRecord(message):
+    response = requests.post(
+        currentServer+"recordAction",
+        data = {
+        "message": message
+        }
+        )
+    pprint(response.json())
+
 def postUpdate(name, message, endpoint, pid=""):
     response = requests.post(
         currentServer+endpoint,
@@ -62,11 +71,11 @@ def postOption(host, message, connnectNext, endpoint):
 
 while cont:
     print(colored("Welcome to the ivrTREE builder. We hope you enjoy making great creations", "green"))
-    print("1. New Host/Option, 2. Update Host/Option 3. TODO list, 4. Current Paths/Hosts, 5. Current Tree, 6. Build IVR")
+    print("1. New Host/Option, 2. Update Host/Option 3. Add Record Option 4. TODO list 5. Current Paths/Hosts 6. Current Tree 7. Build IVR")
     line = sys.stdin.readline()
     choice = line.rstrip()
     print(int(choice))
-    if not int(choice) in [1,2,3,4,5,6]:
+    if not int(choice) in [1,2,3,4,5,6,7]:
         cont = False
         sys.exit(0)
     elif choice == "1":
@@ -155,12 +164,17 @@ while cont:
             print(colored("Incorrect Entry", "red"))
             continue
     elif choice == "3":
-        postPath("new","next",'noncomplete')
+        print(colored("Add a message EG: 'Please leave a message after the tone'", "green"))
+        line = sys.stdin.readline()
+        message = line.strip()
+        postRecord(message)
     elif choice == "4":
-        postPath("new","next", 'connections')
+        postPath("new","next",'noncomplete')
     elif choice == "5":
-        postPath("new","next", 'currentTree')
+        postPath("new","next", 'connections')
     elif choice == "6":
+        postPath("new","next", 'currentTree')
+    elif choice == "7":
         print(colored("Enter 'sms', 'voice' or 'both'", "green"))  
         line = sys.stdin.readline()
         buildChoice = line.strip()

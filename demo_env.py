@@ -146,8 +146,7 @@ def checkVoice(keyPress, callID):
         print(responseFind)
         responseFind = responseFind["connection"]
         responseFind = currentCollection.find_one({"name": responseFind})
-        responseVoice = responseFind["voiceIVR"]
-        response = responseVoice
+        response = responseFind["voiceIVR"]
         customers.update_one(current_customer,{"$push":{"request_responses":str(keyPress), "request_ids":responseFind["pid"]}})
     return response
 
@@ -161,6 +160,19 @@ def test_response():
     print(callID)
     messageVoice = checkVoice(keyPress, callID)
     return messageVoice
+
+def recordURL(callID, fileURL):
+    current_customer = customers.find_one({"callID":callID})
+    print(current_customer)
+    customers.update_one(current_customer,{"$set":{"recordingURL":fileURL}})
+    return {"url-added": fileURL}
+
+@post('/recordings')
+def recordings():
+    callID = request.forms.get("callid")
+    fileURL = str(request.forms.get("wav"))
+    print(callID, fileURL)
+    return recordURL(callID, fileURL)
 
 @get('/static/<path>')
 def static(path):
