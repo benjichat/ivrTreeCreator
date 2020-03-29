@@ -193,7 +193,6 @@ def buildIVR(service):
 def build_IVR():
     service = request.forms.get("service")
     print(service)
-    print(type(service))
     return buildIVR(service)
 
 # This section defines non-complete sections. Sections that have been called as options but no host path
