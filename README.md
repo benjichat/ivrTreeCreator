@@ -41,35 +41,35 @@ python3 BuilderAPI.py
 
 ### The Builder Tool
 
-This is the tool that communicates with the API to build your IVR tree5
+This is the tool that communicates with the API to build your IVR trees
 
 ![](images/menu.png)
 
-1. New Host(s) contain Option(s) and serve as endpoints for other options. 
-![](images/1.png) 
+1. New Host(s) contain Option(s) and serve as endpoints for other options.<br/> 
+![](images/1.png)<br/> 
 This will allow you to create new host branches, options and connections
 
-2. Update Host/Option
-![](images/2.png)
+2. Update Host/Option<br/>
+![](images/2.png)<br/>
 This will allow you to change the messages for hosts and options
 
-3. Add Record Option
-![](images/3.png)
+3. Add Record Option<br/>
+![](images/3.png)<br/>
 This allows you to add a record action as an option. Implementing this option will append a URL to the customers call file where you can download the recorded audio.
 
-4. TODO list is a list of hosts that need to be made to match with option connections
-![](images/4.png)
+4. TODO list is a list of hosts that need to be made to match with option connections<br/>
+![](images/4.png)<br/>
 This shows you a list of the hosts that need to be made so that when options are selected messages are returned.
 
-5. Current Paths/Hosts refers to the available Paths/Hosts to add options to
-![](images/5.png)
+5. Current Paths/Hosts refers to the available Paths/Hosts to add options to.<br/>
+![](images/5.png)<br/>
 This the the list of current hosts.
 
-6. Returns a formatted view of your current IVR Tree
-![](images/6.png)
+6. Returns a formatted view of your current IVR Tree<br/>
+![](images/6.png)<br/>
 
-7. Builds the Voice IVR system using Google Text-to-speech 
-![](images/7.png)
+7. Builds the Voice IVR system using Google Text-to-speech<br/>
+![](images/7.png)<br/>
 You will need to export your credentials correctly for this step to processes[guide on credentials](https://cloud.google.com/docs/authentication/getting-started)
 
 ### The Demo Environment
