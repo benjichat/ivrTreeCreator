@@ -144,7 +144,7 @@ def getInfo():
     print(name)
     info = currentCollection.find_one({"name":name})
     if options:
-        info = {"info":{"name":info["name"], "options": info["options"]}}
+        info = {"info":{"name":info["name"], "message":info["message"], "options": info["options"]}}
     else:
         info = {"info":{"name":info["name"], "message":info["message"], "options":len(info["options"])}}
     if info:

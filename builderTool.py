@@ -93,26 +93,26 @@ while cont:
         cont = False
         sys.exit(0)
     elif choice == "1":
-        print(colored("Enter '1' to create a path OR '2' to create a option", "green"))
+        print(colored("Enter '1' to create a HOST OR '2' to create an OPTION", "green"))
         print()
         line = sys.stdin.readline()
         creationOption = line.strip()
         if creationOption == "1":
-            print(colored("Enter 'name' for new path. Remember to consider connections needed", "green"))
+            print(colored("Enter 'name' for a NEW HOST or enter name of a HOST that needs updating", "green"))
             current = postPath("new","next",'noncomplete')
             if current == {"todo" : "NO PATHS AVAILABLE"}:
-                print(colored("NO PATHS AVAILABLE", "red"))
+                print(colored("No connections that require host", "red"))
             else:
                 for x in current["todo"]:
                     print(colored(x, "yellow"))
             print()
             line = sys.stdin.readline()
             name = line.strip()
-            print(colored("Enter 'message' for new path.", "green"))
+            print(colored("Enter 'message' for host.", "green"))
             print()
             line = sys.stdin.readline()
             message = line.strip()
-            print(colored("Press 'enter' to retain: True or enter any key to retain:False", "green"))
+            print(colored("Press 'enter' if this is not the end of the path OR any other key", "green"))
             print()
             line = sys.stdin.readline()
             retain = line.strip()
@@ -128,13 +128,19 @@ while cont:
                 print()
                 addOption = True
             while addOption:
-                print(colored("Press '1' to add option OR Press '2' to skip", "green"))
+                print(colored("Press '1' to ADD OPTION to CURRENT HOST OR Press '2' to skip", "green"))
                 print()
                 line = sys.stdin.readline()
                 add = line.strip()
                 if add == "1":
                     host = name
-                    print(colored("Enter a message for this option - Press # to ...", "green"))
+                    current = postInfo(host, options = True)
+                    print(colored("HOST:"+current["info"]["name"], "cyan"))
+                    print(colored("MESSAGE:"+current["info"]["message"], "yellow"))
+                    for option in current["info"]["options"]:
+                        print(colored("       OPTION: " + str(option["pid"]) + ". " + option["connection"], "magenta"))
+                        print(colored("       MESSAGE: " + option["message"], "blue"))
+                    print(colored("Write the message for your new option. When built it will read Press # to (your message)", "green"))
                     print()
                     line = sys.stdin.readline()
                     message = line.strip()
@@ -155,7 +161,13 @@ while cont:
             print()
             line = sys.stdin.readline()
             host = line.strip()
-            print(colored("Enter an message for this option - Press # to ...", "green"))  
+            current = postInfo(host, options = True)
+            print(colored("HOST:"+current["info"]["name"], "cyan"))
+            print(colored("MESSAGE:"+current["info"]["message"], "yellow"))
+            for option in current["info"]["options"]:
+                print(colored("       OPTION: " + str(option["pid"]) + ". " + option["connection"], "magenta"))
+                print(colored("       MESSAGE: " + option["message"], "blue"))
+            print(colored("Write the message for your new option. When built it will read Press # to (your message)", "green")) 
             print()
             line = sys.stdin.readline()
             message = line.strip()
@@ -186,7 +198,11 @@ while cont:
             if current["info"] == "NO PATH FOUND":
                 print(colored("NO PATH FOUND", "red"))
             else:
-                print(colored(current, "yellow"))
+                print(colored("HOST:"+current["info"]["name"], "cyan"))
+                print(colored("MESSAGE:"+current["info"]["message"], "yellow"))
+                for option in current["info"]["options"]:
+                    print(colored("       OPTION: " + str(option["pid"]) + ". " + option["connection"], "magenta"))
+                    print(colored("       MESSAGE: " + option["message"], "blue"))
             print(colored("Enter 'message' for new path.", "green"))
             print()
             line = sys.stdin.readline()
@@ -206,12 +222,15 @@ while cont:
             print()
             line = sys.stdin.readline()
             host = line.strip()
-            current = postInfo(host, options = True)
+            current = postInfo(name)
             if current["info"] == "NO PATH FOUND":
                 print(colored("NO PATH FOUND", "red"))
             else:
-                for x in current["info"]["options"]:
-                    print(colored(x, "yellow"))
+                print(colored("HOST:"+current["info"]["name"], "cyan"))
+                print(colored("MESSAGE:"+current["info"]["message"], "yellow"))
+                for option in current["info"]["options"]:
+                    print(colored("       PID: " + str(option["pid"]) + ". " + option["connection"], "magenta"))
+                    print(colored("       MESSAGE: " + option["message"], "blue"))
             print(colored("Please select the 'pid' assoicated with the option you want to change", "green"))
             print()
             line = sys.stdin.readline()

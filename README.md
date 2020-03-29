@@ -56,7 +56,7 @@ The 'Builder API' **must be running** whilst you are using the 'Builder Tool'
 
 1. New Host(s) contain Option(s) and serve as endpoints for other options.<br/> 
 ![](images/1.png)<br/> 
-This will allow you to create new host branches, options and connections
+This will allow you to create new host branches, options and connections.
 
 2. Update Host/Option<br/>
 ![](images/2.png)<br/>
