@@ -6,9 +6,8 @@
 * A free [mongoDB Atlas account](https://www.mongodb.com/cloud/atlas)
 * If you want to use Google's Text-to-speech API then you need a [GCP Account](https://cloud.google.com/text-to-speech)
 * Currently the API and Demo Environment is served using the bottle.py microframework on an NGROK server
-* If you want to use SMS the Konversations API is more stable (regular SMS integration coming)
-
-* you will need to create a config.py file to store MongoDB and 46elks Credentials
+* The SMS integration requires work (customers need to be removed after testing)
+* You will need to create a config.py file to store MongoDB and 46elks Credentials
 ```
 mongo_user = 'USERNAME'
 mongo_pass = 'PASSWORD'
