@@ -186,7 +186,7 @@ def startingPoint():
     response = start["smsIVR"]
     return response
 
-@post('/konversationsDemo')
+@post('/smsDemo')
 def demo_start():
     from_sender = request.forms.get("from")
     response = requests.post(

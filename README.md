@@ -31,61 +31,50 @@ db = client.get_database("YOUR DATABASE")
 first = db.YOUR COLLECTION #usecase collection
 currentServer = "https://dca8234f.ngrok.io/"
 ```
+
+The 'Builder API' **must be running** whilst you are using the 'Builder Tool'
+
+To start:
+```
+python3 BuilderAPI.py
+```
+
 ### The Builder Tool
 
-This is the tool that communicates with the API to build your IVR tree
+This is the tool that communicates with the API to build your IVR tree5
 
-```
-1. New Path/Host, 2. New Options, 3. TODO list, 4. Current Paths/Hosts, 5. Current Tree, 6. Build IVR
-```
+![](images/menu.png)
 
-1. New Paths are also hosts for new messages and new options. 
+1. New Host(s) contain Option(s) and serve as endpoints for other options. 
+![](images/1.png) 
+This will allow you to create new host branches, options and connections
 
-```
-New Path Name = Welcome
-New Path Message = Welcome to 46elks. Please choose from:
-```
-You will also be given the choice to ADD options immmeadietly 
+2. Update Host/Option
+![](images/2.png)
+This will allow you to change the messages for hosts and options
 
-2. New Options must be attached to a host (path) AND provide a connection to a new path (host)
+3. Add Record Option
+![](images/3.png)
+This allows you to add a record action as an option. Implementing this option will append a URL to the customers call file where you can download the recorded audio.
 
-```
-New option Host = Welcome (This is the path the options are connected to)
-New option Message = to speak with customer support (This is the available option)
-New option Connection = Support (This is the connection that will trigger if this option is chosen)
-```
-3. TODO list is a list of hosts that need to be made to match with option connections
+4. TODO list is a list of hosts that need to be made to match with option connections
+![](images/4.png)
+This shows you a list of the hosts that need to be made so that when options are selected messages are returned.
 
-```
-{"paths" : "Support"} - This means that the Support option needs to be created as a new path
-```
-4. Current Paths/Hosts refers to the available Paths/Hosts to add options to
+5. Current Paths/Hosts refers to the available Paths/Hosts to add options to
+![](images/5.png)
+This the the list of current hosts.
 
-```
-{"list of paths" : ["Support", "Welcome"]} - This means that the Support option needs to be created as a new path
-```
-5. Returns a JSON of the current tree structure
-```
-{'state': [{'message': 'This is the start of your journey. What would you like to do?',
-            'name': 'Start',
-            'options': [{'connection': 'realm',
-                         'message': 'Head into the realm',
-                         'pid': 1}],
-            'retain': True,
-            'pid': 1,}
-```
-6. Builds the Voice IVR system using Google Text-to-speech (you will need to export your credentials correctly for this step to processes)[guide on credentials](https://cloud.google.com/docs/authentication/getting-started)
+6. Returns a formatted view of your current IVR Tree
+![](images/6.png)
 
-```
-{'tree branches built': [{'name': 'deeper', 'pid': 3}]}
-```
-OR
-```
-{"tree branches built":"no tree to build, please add new paths and options"}
-```
+7. Builds the Voice IVR system using Google Text-to-speech 
+![](images/7.png)
+You will need to export your credentials correctly for this step to processes[guide on credentials](https://cloud.google.com/docs/authentication/getting-started)
+
 ### The Demo Environment
 
-You will need to update:
+In order to test your current tree you will need to update:
 
 ```
 db = client.get_database("YOUR DATABASE")
@@ -94,3 +83,4 @@ currentServer = "https://dca8234f.ngrok.io/"
 ```
 
 AND the call forwarding options on your 46elks account.
+![](images/numberSetup.png)

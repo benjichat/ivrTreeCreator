@@ -11,8 +11,8 @@ from bson import json_util #https://stackoverflow.com/questions/19674311/json-se
 
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
-currentCollection = db.daniel #usecase database
-collectionName = "daniel"
+currentCollection = db.myIVR #usecase database
+collectionName = "myIVR"
 currentServer = "https://dca8234f.ngrok.io/"
 
 print()
@@ -229,7 +229,10 @@ def optionalConnections():
     connections = {"list of paths":[]}
     for x in allRows:
         connections["list of paths"].append({"name":x["name"]})
-    return connections
+    if connections["list of paths"] == []:
+        return {"list of paths" : "NO PATHS AVAILABLE"}
+    else:
+        return connections
 
 @post('/connections')
 def connections():
