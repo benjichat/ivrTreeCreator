@@ -11,16 +11,19 @@ from pymongo import MongoClient
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
 customers = db.customers #customer konversation database
-currentCollection = db.daniel #usecase database
-collectionName = "daniel"
+currentCollection = db.myIVR #usecase database
+collectionName = "myIVR"
 currentServer = "https://dca8234f.ngrok.io/"
 
 print()
 print("BOOTING DEMO FOR COLLECTION '" + collectionName + "'")
 print()
 
-def check_new_customer(token, from_sender, message, created):
-    current_customer = customers.find_one({"token":token})
+def check_new_customer(from_sender, message, created, token="sms"):
+    if token == "sms":
+        current_customer = customers.find_one({"mobilenumber":from_sender})
+    else:
+        current_customer = customers.find_one({"token":token})
     print("---------------------------- CHECKING KUND ---------------------------")
     pprint(current_customer)
     if not current_customer:
@@ -76,6 +79,8 @@ def check_valid_response(message,current_customer):
 def sms_usecase():
     print("---------------------------- MAIN SMS REceived -----------------------------")
     token = request.forms.get("token")
+    if token == None:
+        token = "sms"
     from_sender = request.forms.get("from")
     message = request.forms.get("message")
     created = request.forms.get("created")
@@ -88,13 +93,15 @@ def sms_usecase():
     if stop_message:
         return stop_message
     # checking customer pool  (2)
-    current_customer = check_new_customer(token, from_sender, message, created)
+    current_customer = check_new_customer(from_sender, message, created, token)
     # checking incoming customer response and preparing outgoing response (3)
     response, retain = check_valid_response(message,current_customer)
     # sending outgoing response (4)
     send_response = {"reply":response, "retain":retain}
-    pprint(send_response)
-    return send_response
+    if token == "sms":
+        return {"reply":response}
+    else:
+        return send_response
 
 def checkCustomerVoice(callID, from_sender, created):
     current_customer = customers.find_one({"callID":callID})
