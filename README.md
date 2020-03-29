@@ -3,10 +3,10 @@
 ### What you will need
 
 * [A 46elks Account](www.46elks.com)
-* Access to the 46elks Konversations API if you want to use the SMS functionality (can modify for regular SMS API)
 * A free [mongoDB Atlas account](https://www.mongodb.com/cloud/atlas)
 * If you want to use Google's Text-to-speech API then you need a [GCP Account](https://cloud.google.com/text-to-speech)
 * Currently the API and Demo Environment is served using the bottle.py microframework on an NGROK server
+* If you want to use SMS the Konversations API is more stable (regular SMS integration coming)
 
 ## Overview
 
@@ -41,7 +41,8 @@ python3 BuilderAPI.py
 
 ### The Builder Tool
 
-This is the tool that communicates with the API to build your IVR trees
+This is the tool that communicates with the API to build your IVR trees. 
+The 'Builder API' **must be running** whilst you are using the 'Builder Tool'
 
 ![](images/menu.png)
 
@@ -65,7 +66,7 @@ This shows you a list of the hosts that need to be made so that when options are
 ![](images/5.png)<br/>
 This the the list of current hosts.
 
-6. Returns a formatted view of your current IVR Tree<br/>
+6. Returns a formatted view or raw JSON of your current IVR Tree<br/>
 ![](images/6.png)<br/>
 
 7. Builds the Voice IVR system using Google Text-to-speech<br/>

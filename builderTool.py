@@ -252,14 +252,20 @@ while cont:
                 print(colored(x, "yellow"))
         print()
     elif choice == "6":
+        print(colored("Press '1' for formatted or '2' for raw JSON", "green"))
+        line = sys.stdin.readline()
+        choice = line.strip()
         current = postPath("new","next", 'currentTree')
-        for x in current:
-            print(colored("HOST: " + x["name"], "cyan"))
-            print(colored("MESSAGE: " + x["message"], "yellow"))
-            if "options" in x:
-                for option in x["options"]:
-                    print(colored("       OPTION: " + str(option["pid"]) + ". " + option["connection"], "magenta"))
-                    print(colored("       MESSAGE: " + option["message"], "blue"))
+        if int(choice) == 1:
+            for x in current:
+                print(colored("HOST: " + x["name"], "cyan"))
+                print(colored("MESSAGE: " + x["message"], "yellow"))
+                if "options" in x:
+                    for option in x["options"]:
+                        print(colored("       OPTION: " + str(option["pid"]) + ". " + option["connection"], "magenta"))
+                        print(colored("       MESSAGE: " + option["message"], "blue"))
+        else:
+            print(current)
         print()
     elif choice == "7":
         print(colored("Please select what form of IVR Tree you would like to build", "green"))
