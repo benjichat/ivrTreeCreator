@@ -11,8 +11,8 @@ from bson import json_util #https://stackoverflow.com/questions/19674311/json-se
 
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
-currentCollection = db.myIVR #usecase database
-collectionName = "myIVR"
+currentCollection = db.kiki #usecase database
+collectionName = "kiki"
 currentServer = "https://dca8234f.ngrok.io/"
 
 print()

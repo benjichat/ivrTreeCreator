@@ -11,8 +11,8 @@ from pymongo import MongoClient
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
 customers = db.customers #customer konversation database
-currentCollection = db.myIVR #usecase database
-collectionName = "myIVR"
+currentCollection = db.kiki #usecase database
+collectionName = "kiki"
 currentServer = "https://dca8234f.ngrok.io/"
 
 print()
