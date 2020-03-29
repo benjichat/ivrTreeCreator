@@ -2,7 +2,7 @@
 
 ### What you will need
 
-* [A 46elks Account](www.46elks.com)
+* [A 46elks Account](https://www.46elks.com)
 * A free [mongoDB Atlas account](https://www.mongodb.com/cloud/atlas)
 * If you want to use Google's Text-to-speech API then you need a [GCP Account](https://cloud.google.com/text-to-speech)
 * Currently the API and Demo Environment is served using the bottle.py microframework on an NGROK server
