@@ -121,7 +121,8 @@ def editPathMessage(name, message, pid=""):
             currentCollection.update_one(editPath,{"$set":{"options.$[el1].message":message}}, array_filters=[{"el1.pid":int(pid)}])
         else:
             currentCollection.update_one(editPath,{"$set":{"message":message}})
-    return {"updated" : editPath["name"]}
+    editPath = currentCollection.find_one({"name":name})
+    return {"updated" : {"name":editPath["name"],"message":editPath["message"], "options":editPath["options"]}}
 
 @post('/updatePath')
 def update():
@@ -139,14 +140,18 @@ def update():
 @post('/pathInfo')
 def getInfo():
     name = request.forms.get("name")
+    options = request.forms.get("options")
     print(name)
     info = currentCollection.find_one({"name":name})
-    info = {"name":info["name"], "message":info["message"], "options":len(info["options"])}
+    if options:
+        info = {"info":{"name":info["name"], "options": info["options"]}}
+    else:
+        info = {"info":{"name":info["name"], "message":info["message"], "options":len(info["options"])}}
     if info:
         return info
         #return json.dumps(info["name"],default=json_util.default)
     else:
-        return {"error":"no path found"}
+        return {"info":"NO PATH FOUND"}
 
 
 #This section builds the voice responses for for thosts (https://cloud.google.com/text-to-speech/docs)
@@ -173,6 +178,8 @@ def buildIVR(service):
                 voiceIVR = {"ivr":voiceUpdate, "digits":1, "timeout": 4, "skippable":True, "next": currentServer +"voiceCont"}
                 currentCollection.update_one(row,{"$set":{"voiceIVR":voiceIVR}})
             elif service == "both":
+                voiceUpdate = createSSML(str(voiceMessage))
+                voiceIVR = {"ivr":voiceUpdate, "digits":1, "timeout": 4, "skippable":True, "next": currentServer +"voiceCont"}
                 currentCollection.update_one(row,{"$set":{"voiceIVR":voiceIVR, "smsIVR":smsMessage}})
             else:
                 currentCollection.update_one(row,{"$set":{"smsIVR":smsMessage}})
@@ -198,14 +205,15 @@ def nonCompletePaths():
     allRows = currentCollection.find({})
     #print(sorted_list)
     for x in allRows:
-        for option in x["options"]:
-            list_of_connections.append(option["connection"])
+        if 'options' in x:
+            for option in x["options"]:
+                list_of_connections.append(option["connection"])
     for x in list_of_connections:
         if not currentCollection.find_one({"name":x}):
             non_complete["todo"].append(x)
             print(x)
     if non_complete["todo"] == []:
-        return {"paths" : "NO PATHS AVAILABLE"}
+        return {"todo" : "NO PATHS AVAILABLE"}
     else:
         return non_complete
 
@@ -242,8 +250,10 @@ def pathState():
 
 @post('/currentTree')
 def connections():
-    response.content_type = 'application/json'
-    return pathState()
+    #response.content_type = 'application/json'
+    current = list(currentCollection.aggregate([{"$sort":{"pid":1}}]))
+    return json.dumps(current,default=json_util.default)
+    #return pathState()
 
 
 
