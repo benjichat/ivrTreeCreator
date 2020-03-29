@@ -8,6 +8,15 @@
 * Currently the API and Demo Environment is served using the bottle.py microframework on an NGROK server
 * If you want to use SMS the Konversations API is more stable (regular SMS integration coming)
 
+* you will need to create a config.py file to store MongoDB and 46elks Credentials
+```
+mongo_user = 'USERNAME'
+mongo_pass = 'PASSWORD'
+
+elks_user = 'USERNAME'
+elks_pass = 'PASSWORD'
+```
+
 ## Overview
 
 There are currently three components to this repo:
