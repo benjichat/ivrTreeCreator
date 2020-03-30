@@ -11,8 +11,8 @@ from bson import json_util #https://stackoverflow.com/questions/19674311/json-se
 
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
-currentCollection = db.kiki #usecase database
-collectionName = "kiki"
+currentCollection = db.covid #usecase database
+collectionName = "covid"
 currentServer = "https://dca8234f.ngrok.io/"
 
 print()
@@ -170,7 +170,7 @@ def buildIVR(service):
             currentCollection.update_one(row,{"$set":{"voiceIVR":voiceIVR}})
         else:
             for option in row["options"]:
-                voiceMessage += "<break time='1' /> Press " + str(option["pid"]) + " to " + option["message"]
+                voiceMessage += "<break time='1' /> Press " + str(option["pid"]) + option["message"]
                 smsMessage += "\r\n" + str(option["pid"]) + ". " +   option["message"]
             print("--------------------- BUILDING IVR TREE -------------------------------")
             if service == "voice":
@@ -244,18 +244,23 @@ def connections():
 def pathState():
     print("---------------------CURRENT STATE-------------------------------")
     fetch_list = list(currentCollection.aggregate([{"$sort":{"pid":1}}]))
-    pathState = {"state":[]}
+    pathState = {"currentTree":[]}
     for row in fetch_list:
-        rowAdd = {"name":row["name"], "message":row["message"], "retain":row["retain"]  ,"options":row["options"]}
-        pathState["state"].append(rowAdd)
+        if 'options' in row.keys():
+            if row['options'] != None:
+                rowAdd = {"name":row["name"], "message":row["message"],"options":row["options"]}
+        else:
+            {"name":row["name"], "message":row["message"]}
+        pathState["currentTree"].append(rowAdd)
+    print(pathState)
     return pathState
 
 @post('/currentTree')
 def connections():
     #response.content_type = 'application/json'
     current = list(currentCollection.aggregate([{"$sort":{"pid":1}}]))
-    return json.dumps(current,default=json_util.default)
-    #return pathState()
+    #return json.dumps(current,default=json_util.default)
+    return pathState()
 
 
 

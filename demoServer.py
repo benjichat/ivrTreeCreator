@@ -11,8 +11,8 @@ from pymongo import MongoClient
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
 customers = db.customers #customer konversation database
-currentCollection = db.kiki #usecase database
-collectionName = "kiki"
+currentCollection = db.covid #usecase database
+collectionName = "covid"
 currentServer = "https://dca8234f.ngrok.io/"
 
 print()
@@ -118,9 +118,14 @@ def checkCustomerVoice(callID, from_sender, created):
 
 @post('/voiceStart')
 def test_response():
+    body = request.body.read()
+    print(body)
     callID = request.forms.get("callid")
-    created = str(request.forms.get("created"))
+    created = request.forms.get("created")
     callNumber = request.forms.get("from")
+    print("callID:" + str(callID))
+    print("created:" + str(created))
+    print("callNUMBER:" + str(callNumber))
     newCustomer = checkCustomerVoice(callID, callNumber, created)
     startVoice = currentCollection.find_one({"pid":1})
     print(startVoice["voiceIVR"])

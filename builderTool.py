@@ -1,5 +1,6 @@
 import sys
 import string
+import json
 from pprint import pprint
 import requests
 from termcolor import *
@@ -167,7 +168,7 @@ while cont:
             for option in current["info"]["options"]:
                 print(colored("       OPTION: " + str(option["pid"]) + ". " + option["connection"], "magenta"))
                 print(colored("       MESSAGE: " + option["message"], "blue"))
-            print(colored("Write the message for your new option. When built it will read Press # to (your message)", "green")) 
+            print(colored("Write the message for your new option. When built it will read Press # (your message)", "green")) 
             print()
             line = sys.stdin.readline()
             message = line.strip()
@@ -276,7 +277,7 @@ while cont:
         choice = line.strip()
         current = postPath("new","next", 'currentTree')
         if int(choice) == 1:
-            for x in current:
+            for x in current["currentTree"]:
                 print(colored("HOST: " + x["name"], "cyan"))
                 print(colored("MESSAGE: " + x["message"], "yellow"))
                 if "options" in x:
@@ -284,7 +285,9 @@ while cont:
                         print(colored("       OPTION: " + str(option["pid"]) + ". " + option["connection"], "magenta"))
                         print(colored("       MESSAGE: " + option["message"], "blue"))
         else:
-            print(current)
+            pprint(current)
+            with open('data.txt', 'w') as outfile:
+                json.dump(current, outfile)
         print()
     elif choice == "7":
         print(colored("Please select what form of IVR Tree you would like to build", "green"))

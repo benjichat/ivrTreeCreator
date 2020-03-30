@@ -1,0 +1,93 @@
+{
+    "state": [
+        {
+            "name": "welcome",
+            "message": "This is the COVID survey tool. How are you feeling today?",
+            "retain": true,
+            "options": [
+                {
+                    "pid": 1,
+                    "connection": "healthy",
+                    "message": "if your feeling healthy"
+                },
+                {
+                    "pid": 2,
+                    "connection": "so so",
+                    "message": "your feeling so so"
+                },
+                {
+                    "pid": 3,
+                    "connection": "bad",
+                    "message": "your feeling bad"
+                },
+                {
+                    "pid": 4,
+                    "connection": "record",
+                    "message": "you would like to record a message"
+                }
+            ]
+        },
+        {
+            "name": "welcome",
+            "message": "This is the COVID survey tool. How are you feeling today?",
+            "retain": true,
+            "options": [
+                {
+                    "pid": 1,
+                    "connection": "healthy",
+                    "message": "if your feeling healthy"
+                },
+                {
+                    "pid": 2,
+                    "connection": "so so",
+                    "message": "your feeling so so"
+                },
+                {
+                    "pid": 3,
+                    "connection": "bad",
+                    "message": "your feeling bad"
+                },
+                {
+                    "pid": 4,
+                    "connection": "record",
+                    "message": "you would like to record a message"
+                }
+            ]
+        },
+        {
+            "name": "healthy",
+            "message": "You have been recorded as healthy! Thanks!",
+            "retain": false,
+            "options": []
+        },
+        {
+            "name": "so so",
+            "message": "You have been recorded as feeling so so. Thanks!",
+            "retain": false,
+            "options": []
+        },
+        {
+            "name": "bad",
+            "message": "You have been recorded as feeling bad. Would you like to leave a message?",
+            "retain": true,
+            "options": [
+                {
+                    "pid": 1,
+                    "connection": "record",
+                    "message": "you would like to leave a message."
+                },
+                {
+                    "pid": 2,
+                    "connection": "bad-no-message",
+                    "message": "you are fine without leaving a message."
+                }
+            ]
+        },
+        {
+            "name": "bad-no-message",
+            "message": "Okay. Make sure you seek help if you need it!",
+            "retain": false,
+            "options": []
+        }
+    ]
+}
