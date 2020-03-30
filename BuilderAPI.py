@@ -248,7 +248,7 @@ def pathState():
     for row in fetch_list:
         if 'options' in row.keys():
             if row['options'] != None:
-                rowAdd = {"name":row["name"], "message":row["message"],"options":row["options"]}
+                rowAdd = {"name":row["name"], "message":row["message"],"options":row["options"], "retain":row["retain"]}
         else:
             {"name":row["name"], "message":row["message"]}
         pathState["currentTree"].append(rowAdd)
