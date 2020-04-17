@@ -11,9 +11,9 @@ from bson import json_util #https://stackoverflow.com/questions/19674311/json-se
 
 client = MongoClient("mongodb+srv://"+config.mongo_user+":"+config.mongo_pass+"@troll-demo-v0dyx.mongodb.net/test?retryWrites=true&w=majority")
 db = client.get_database("creator")
-currentCollection = db.gastrofy #usecase database
-collectionName = "gastrofy"
-currentServer = "https://dca8234f.ngrok.io/"
+currentCollection = db.covid #usecase database
+collectionName = "covid"
+currentServer = "https://7f3759e6.ngrok.io/"
 
 print()
 print()
@@ -248,7 +248,7 @@ def pathState():
     for row in fetch_list:
         if 'options' in row.keys():
             if row['options'] != None:
-                rowAdd = {"name":row["name"], "message":row["message"],"options":row["options"], "retain":row["retain"]}
+                rowAdd = {"name":row["name"], "message":row["message"],"options":row["options"]}
         else:
             {"name":row["name"], "message":row["message"]}
         pathState["currentTree"].append(rowAdd)

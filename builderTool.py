@@ -5,7 +5,7 @@ from pprint import pprint
 import requests
 from termcolor import *
 
-currentServer = "https://dca8234f.ngrok.io/"
+currentServer = "https://7f3759e6.ngrok.io/"
 
 cont = True
 
